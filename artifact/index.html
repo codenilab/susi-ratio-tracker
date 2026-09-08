@@ -1,0 +1,508 @@
+<title>패션·의류계열 수시 경쟁률</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap');
+
+  :root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --surface-2: #fbfbfc;
+    --border: #e2e5eb;
+    --text: #1c2333;
+    --text-muted: #626b7a;
+    --text-faint: #8992a3;
+    --accent: #2b3b6b;
+    --accent-strong: #1c2749;
+    --accent-soft: #eef1f9;
+    --warn: #a84e22;
+    --warn-soft: #fbece2;
+    --shadow: 0 1px 2px rgba(28, 35, 51, 0.04), 0 6px 20px rgba(28, 35, 51, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12151d;
+      --surface: #1a1e29;
+      --surface-2: #1f2431;
+      --border: #2b3040;
+      --text: #e8eaf0;
+      --text-muted: #9aa2b3;
+      --text-faint: #6d7688;
+      --accent: #8b9be3;
+      --accent-strong: #aab6ec;
+      --accent-soft: #232a44;
+      --warn: #e0925f;
+      --warn-soft: #33221a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12151d;
+    --surface: #1a1e29;
+    --surface-2: #1f2431;
+    --border: #2b3040;
+    --text: #e8eaf0;
+    --text-muted: #9aa2b3;
+    --text-faint: #6d7688;
+    --accent: #8b9be3;
+    --accent-strong: #aab6ec;
+    --accent-soft: #232a44;
+    --warn: #e0925f;
+    --warn-soft: #33221a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Gowun Dodum", "Malgun Gothic", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  header.page {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    font-family: "Gowun Dodum", sans-serif;
+  }
+
+  h1 {
+    font-family: "Gowun Batang", serif;
+    font-weight: 700;
+    font-size: clamp(26px, 4vw, 34px);
+    margin: 0;
+    text-wrap: balance;
+    color: var(--text);
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .updated {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .updated strong { color: var(--text); font-weight: 600; }
+
+  button.refresh {
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    padding: 7px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+  button.refresh:hover { border-color: var(--accent); color: var(--accent); }
+  button.refresh:active { transform: scale(0.97); }
+  button.refresh svg { width: 13px; height: 13px; }
+  button.refresh.spinning svg { animation: spin 0.7s linear; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* 요약 타일 */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 22px 0 28px;
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .stat .num {
+    font-family: "Gowun Batang", serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-strong);
+  }
+  .stat .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .stat.warn .num { color: var(--warn); }
+
+  /* 검색 */
+  .filter {
+    margin-bottom: 26px;
+  }
+  .filter input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .filter input::placeholder { color: var(--text-faint); }
+  .filter input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+
+  /* 대학 카드 */
+  .schools {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .school {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .school-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .school-head h2 {
+    font-family: "Gowun Batang", serif;
+    font-size: 18px;
+    margin: 0;
+    color: var(--text);
+  }
+  .school-head .dept {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .school-head .avg {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .table-scroll { overflow-x: auto; }
+
+  /* table-layout: fixed + <colgroup>의 고정 폭 덕분에 모집/지원/경쟁률 칸이
+     대학 카드마다 다른 위치로 어긋나지 않고 항상 같은 x좌표에 정렬된다.
+     전형(및 학과)명 칸만 남는 공간을 유동적으로 나눠 갖는다. */
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 8px 20px;
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  thead th.num, td.num { text-align: right; }
+  th.name, td.name {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+  }
+
+  tbody td {
+    padding: 9px 20px;
+    border-top: 1px solid var(--border);
+    white-space: nowrap;
+    color: var(--text);
+  }
+  tbody tr:hover td { background: var(--surface-2); }
+
+  td.ratio {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .chip {
+    display: inline-block;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    margin-left: 8px;
+    background: var(--warn-soft);
+    color: var(--warn);
+    font-weight: 600;
+    vertical-align: 1px;
+  }
+
+  .empty-note {
+    padding: 28px 20px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 13.5px;
+  }
+
+  footer {
+    margin-top: 36px;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-align: center;
+  }
+  footer a { color: inherit; }
+
+  @media (max-width: 620px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    thead th, tbody td { padding: 8px 12px; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page">
+    <span class="eyebrow">패션 · 의류 계열 · 8개교</span>
+    <h1>수시 경쟁률 모니터</h1>
+    <div class="meta-row">
+      <span class="updated" id="updatedText">데이터를 불러오는 중…</span>
+      <button class="refresh" id="refreshBtn" type="button">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2.5V6h-3.5"/>
+        </svg>
+        새로고침
+      </button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="filter">
+    <input id="searchInput" type="text" placeholder="대학·학과·전형명으로 찾기 (예: 패션산업, 학생부종합)" autocomplete="off" />
+  </div>
+
+  <div class="schools" id="schools">
+    <div class="empty-note">데이터를 불러오는 중…</div>
+  </div>
+
+  <footer>
+    출처: 각 대학 진학어플라이 / 유웨이어플라이 경쟁률 페이지 · 자동 수집 (약 10분 주기)
+  </footer>
+</div>
+
+<script>
+  let latestDoc = null; // { generatedAt, rows }
+  let filterText = "";
+
+  function parseRatio(str) {
+    if (!str) return NaN;
+    const m = String(str).match(/([\d.]+)\s*:/);
+    return m ? parseFloat(m[1]) : NaN;
+  }
+
+  function relativeTime(iso) {
+    if (!iso) return "";
+    const diffMs = Date.now() - new Date(iso).getTime();
+    const min = Math.round(diffMs / 60000);
+    if (min < 1) return "방금 전";
+    if (min < 60) return min + "분 전";
+    const hr = Math.round(min / 60);
+    if (hr < 24) return hr + "시간 전";
+    return Math.round(hr / 24) + "일 전";
+  }
+
+  function fmtTime(iso) {
+    if (!iso) return "-";
+    const d = new Date(iso);
+    return d.toLocaleString("ko-KR", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function groupBySchool(rows) {
+    const order = [];
+    const map = new Map();
+    for (const r of rows) {
+      if (!map.has(r.대학)) {
+        map.set(r.대학, []);
+        order.push(r.대학);
+      }
+      map.get(r.대학).push(r);
+    }
+    return order.map((school) => ({ school, rows: map.get(school) }));
+  }
+
+  function matchesFilter(row) {
+    if (!filterText) return true;
+    const hay = (row.대학 + " " + row.학과 + " " + row.전형).toLowerCase();
+    return hay.includes(filterText);
+  }
+
+  function render() {
+    const stats = document.getElementById("stats");
+    const schoolsEl = document.getElementById("schools");
+    const updatedText = document.getElementById("updatedText");
+
+    if (!latestDoc || !Array.isArray(latestDoc.rows) || latestDoc.rows.length === 0) {
+      updatedText.textContent = "아직 수집된 데이터가 없습니다.";
+      stats.innerHTML = "";
+      schoolsEl.innerHTML = '<div class="empty-note">첫 수집이 완료되면 여기에 표시됩니다.</div>';
+      return;
+    }
+
+    const rows = latestDoc.rows;
+    updatedText.innerHTML =
+      "마지막 갱신 <strong>" + fmtTime(latestDoc.generatedAt) + "</strong> (" + relativeTime(latestDoc.generatedAt) + ")";
+
+    // 요약 통계
+    const schoolCount = new Set(rows.map((r) => r.대학)).size;
+    const ratios = rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
+    const underCount = ratios.filter((v) => v < 1).length;
+    let topRow = null;
+    for (const r of rows) {
+      const v = parseRatio(r.경쟁률);
+      if (!isNaN(v) && (!topRow || v > parseRatio(topRow.경쟁률))) topRow = r;
+    }
+
+    stats.innerHTML =
+      '<div class="stat"><div class="num">' + schoolCount + '개교</div><div class="label">감시 중인 대학</div></div>' +
+      '<div class="stat"><div class="num">' + rows.length + '건</div><div class="label">전형 × 학과 로우</div></div>' +
+      '<div class="stat warn"><div class="num">' + underCount + '건</div><div class="label">경쟁률 1:1 미만</div></div>' +
+      '<div class="stat"><div class="num">' + (topRow ? topRow.경쟁률.replace(" : ", ":") : "-") + '</div><div class="label">' +
+        (topRow ? topRow.대학 + " · " + topRow.전형 : "최고 경쟁률") + '</div></div>';
+
+    // 대학별 테이블
+    const groups = groupBySchool(rows).map((g) => ({
+      school: g.school,
+      rows: g.rows.filter(matchesFilter),
+    }));
+
+    const visibleGroups = groups.filter((g) => g.rows.length > 0);
+
+    if (visibleGroups.length === 0) {
+      schoolsEl.innerHTML = '<div class="empty-note">검색 결과가 없습니다.</div>';
+      return;
+    }
+
+    schoolsEl.innerHTML = visibleGroups
+      .map((g) => {
+        const deptNames = [...new Set(g.rows.map((r) => r.학과))].join(", ");
+        const validRatios = g.rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
+        const avg = validRatios.length
+          ? (validRatios.reduce((a, b) => a + b, 0) / validRatios.length).toFixed(2)
+          : "-";
+
+        const sortedRows = [...g.rows].sort((a, b) => {
+          const bv = parseRatio(b.경쟁률), av = parseRatio(a.경쟁률);
+          return (isNaN(bv) ? -1 : bv) - (isNaN(av) ? -1 : av);
+        });
+
+        const multiDept = deptNames.includes(",");
+
+        const rowsHtml = sortedRows
+          .map((r) => {
+            const rv = parseRatio(r.경쟁률);
+            const under = !isNaN(rv) && rv < 1;
+            return (
+              '<tr><td class="name">' + r.전형 + "</td>" +
+              (multiDept ? '<td class="name">' + r.학과 + "</td>" : "") +
+              '<td class="num">' + r.모집인원 + "</td>" +
+              '<td class="num">' + r.지원인원 + "</td>" +
+              '<td class="ratio num">' + r.경쟁률 + (under ? '<span class="chip">미달</span>' : "") + "</td></tr>"
+            );
+          })
+          .join("");
+
+        // 모집/지원/경쟁률 칸은 모든 카드에서 똑같은 폭으로 고정해서 세로로 열이 맞도록 한다.
+        const colgroup = multiDept
+          ? '<colgroup><col><col style="width:130px"><col style="width:64px"><col style="width:64px"><col style="width:130px"></colgroup>'
+          : '<colgroup><col><col style="width:64px"><col style="width:64px"><col style="width:130px"></colgroup>';
+
+        return (
+          '<section class="school">' +
+            '<div class="school-head">' +
+              "<h2>" + g.school + '<span class="dept">' + deptNames + "</span></h2>" +
+              '<span class="avg">평균 ' + avg + " : 1 · " + g.rows.length + "건</span>" +
+            "</div>" +
+            '<div class="table-scroll"><table>' + colgroup + '<thead><tr>' +
+              '<th class="name">전형</th>' + (multiDept ? '<th class="name">학과</th>' : "") +
+              '<th class="num">모집</th><th class="num">지원</th><th class="num">경쟁률</th>' +
+            "</tr></thead><tbody>" + rowsHtml + "</tbody></table></div>" +
+          "</section>"
+        );
+      })
+      .join("");
+  }
+
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    filterText = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  document.getElementById("refreshBtn").addEventListener("click", async () => {
+    const btn = document.getElementById("refreshBtn");
+    btn.classList.add("spinning");
+    try {
+      const db = await claude.use("db");
+      if (db) {
+        const snap = await db.doc("ratios/latest").get();
+        if (snap.exists) {
+          latestDoc = snap.data();
+          render();
+        }
+      }
+    } finally {
+      setTimeout(() => btn.classList.remove("spinning"), 400);
+    }
+  });
+
+  (async () => {
+    const db = await claude.use("db");
+    if (!db) {
+      document.getElementById("updatedText").textContent = "실시간 데이터 연결을 사용할 수 없습니다.";
+      return;
+    }
+    db.doc("ratios/latest").onSnapshot(
+      (snap) => {
+        if (snap.exists) {
+          latestDoc = snap.data();
+          render();
+        }
+      },
+      (err) => {
+        document.getElementById("updatedText").textContent = "데이터를 불러오지 못했습니다 (" + err.code + ")";
+      }
+    );
+  })();
+</script>
