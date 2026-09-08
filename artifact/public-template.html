@@ -165,7 +165,19 @@
     color: var(--text);
   }
   .school-head .dept { font-size: 13px; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+  .school-head .right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .school-head .avg { font-size: 12.5px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+  .src-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .src-link:hover { border-color: var(--accent); background: var(--accent-soft); }
 
   .table-scroll { overflow-x: auto; }
 
@@ -238,6 +250,10 @@
     if (!str) return NaN;
     const m = String(str).match(/([\d.]+)\s*:/);
     return m ? parseFloat(m[1]) : NaN;
+  }
+
+  function escapeAttr(s) {
+    return String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;");
   }
 
   function fmtTime(iso) {
@@ -350,11 +366,18 @@
           ? '<colgroup><col><col style="width:130px"><col style="width:64px"><col style="width:64px"><col style="width:130px"></colgroup>'
           : '<colgroup><col><col style="width:64px"><col style="width:64px"><col style="width:130px"></colgroup>';
 
+        const sourceUrl = g.rows[0] && g.rows[0].원본URL;
+
         return (
           '<section class="school">' +
             '<div class="school-head">' +
               "<h2>" + g.school + '<span class="dept">' + deptNames + "</span></h2>" +
-              '<span class="avg">평균 ' + avg + " : 1 · " + g.rows.length + "건</span>" +
+              '<span class="right">' +
+                '<span class="avg">평균 ' + avg + " : 1 · " + g.rows.length + "건</span>" +
+                (sourceUrl
+                  ? '<a class="src-link" href="' + escapeAttr(sourceUrl) + '" target="_blank" rel="noopener noreferrer">원본 경쟁률 페이지 ↗</a>'
+                  : "") +
+              "</span>" +
             "</div>" +
             '<div class="table-scroll"><table>' + colgroup + '<thead><tr>' +
               '<th class="name">전형</th>' + (multiDept ? '<th class="name">학과</th>' : "") +

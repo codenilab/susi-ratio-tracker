@@ -154,6 +154,7 @@ async function fetchTarget(target) {
     지원인원: r.지원인원,
     경쟁률: r.경쟁률,
     수집시각: collectedAt,
+    원본URL: target.url,
   }));
 }
 
