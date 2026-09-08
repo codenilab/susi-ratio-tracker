@@ -38,5 +38,12 @@ susi-ratio-tracker 정기 갱신 작업입니다. 순서대로 실행하세요.
 
 claude -p $prompt --permission-mode auto --allowedTools "Write Bash Artifact" --output-format text 2>&1 | Tee-Object -FilePath $LogFile
 
+# GitHub Pages 배포: index.html(루트)은 위 3번 단계에서 이미 새로 생성됨.
+# 이건 순수 git 작업이라 에이전트를 또 부를 필요 없이 여기서 바로 커밋/푸시한다.
+git add -A 2>&1 | Add-Content -Path $LogFile
+$commitMsg = "auto: 경쟁률 갱신 " + (Get-Date -Format "yyyy-MM-dd HH:mm")
+git commit -m $commitMsg 2>&1 | Add-Content -Path $LogFile
+git push origin main 2>&1 | Add-Content -Path $LogFile
+
 # 오래된 로그 정리 (최근 30개만 보관)
 Get-ChildItem $LogDir -Filter "scrape-*.log" | Sort-Object LastWriteTime -Descending | Select-Object -Skip 30 | Remove-Item -Force
