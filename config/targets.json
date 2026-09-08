@@ -13,7 +13,7 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860591.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "서울여자대학교",
-	"includeTypes": ["학생부종합(바롬인재면접전형)", "학생부종합(바롬인재서류전형)", "학생부교과(교과우수자전형)"]
+    "includeTypes": ["학생부종합(바롬인재면접전형)", "학생부종합(바롬인재서류전형)", "학생부교과(교과우수자전형)"]
   },
   {
     "school": "충남대",
@@ -21,7 +21,7 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "충남대학교",
-	"includeTypes": ["일반전형", "학생부종합 서류전형", "학생부종합 면접전형"]
+    "includeTypes": ["일반전형", "학생부종합 서류전형", "학생부종합 면접전형"]
   },
   {
     "school": "충북대",
@@ -29,7 +29,7 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "충북대학교",
-	"includeTypes": ["학생부교과(학생부교과전형)", "학생부종합(학생부종합Ⅰ전형)", "학생부종합(학생부종합Ⅱ전형)"]
+    "includeTypes": ["학생부교과(학생부교과전형)", "학생부종합(학생부종합Ⅰ전형)", "학생부종합(학생부종합Ⅱ전형)"]
   },
   {
     "school": "공주대",
@@ -37,7 +37,7 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "국립공주대학교",
-	"includeTypes": ["학생부교과전형 일반전형(정원내)", "학생부종합전형 일반전형(정원내)"]
+    "includeTypes": ["학생부교과전형 일반전형(정원내)", "학생부종합전형 일반전형(정원내)"]
   },
   {
     "school": "계명대",
@@ -45,7 +45,7 @@
     "url": "https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=",
     "vendor": "uwayapply",
     "expectedSiteTitle": "계명대학교",
-	"includeTypes": ["정원내 학생부종합(일반전형)", "정원내 학생부교과(일반전형)"]
+    "includeTypes": ["정원내 학생부종합(일반전형)", "정원내 학생부교과(일반전형)"]
   },
   {
     "school": "한경대",
@@ -53,7 +53,7 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "한경국립대학교",
-	"includeTypes": ["학생부교과(일반전형_안성)_정원내", "학생부종합(잠재력우수자_안성)_정원내"]
+    "includeTypes": ["학생부교과(일반전형_안성)_정원내", "학생부종합(잠재력우수자_안성)_정원내"]
   },
   {
     "school": "가톨릭대",
@@ -61,6 +61,30 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "가톨릭대학교",
-	"includeTypes": ["학생부종합(잠재능력우수자면접전형)", "학생부종합(잠재능력우수자서류전형)"]
+    "includeTypes": ["학생부종합(잠재능력우수자면접전형)", "학생부종합(잠재능력우수자서류전형)"]
+  },
+  {
+    "school": "한성대",
+    "department": "AI패션학부",
+    "url": "https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm",
+    "vendor": "uwayapply",
+    "expectedSiteTitle": "한성대학교",
+    "includeTypes": ["한성인재전형"]
+  },
+  {
+    "school": "인천대",
+    "department": "패션산업학과",
+    "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html",
+    "vendor": "jinhakapply",
+    "expectedSiteTitle": "국립인천대학교",
+    "includeTypes": ["학생부종합(자기추천)"]
+  },
+  {
+    "school": "수원대",
+    "department": "의류학과",
+    "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html",
+    "vendor": "jinhakapply",
+    "expectedSiteTitle": "수원대학교",
+    "includeTypes": ["면접위주교과전형"]
   }
 ]

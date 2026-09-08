@@ -17,6 +17,9 @@ const TARGETS = [
   { school: "계명대", department: "패션마케팅학과", url: "https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=", vendor: "uwayapply", expectedSiteTitle: "계명대학교", includeTypes: ["정원내 학생부종합(일반전형)","정원내 학생부교과(일반전형)"] },
   { school: "한경대", department: "의류산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html", vendor: "jinhakapply", expectedSiteTitle: "한경국립대학교", includeTypes: ["학생부교과(일반전형_안성)_정원내","학생부종합(잠재력우수자_안성)_정원내"] },
   { school: "가톨릭대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html", vendor: "jinhakapply", expectedSiteTitle: "가톨릭대학교", includeTypes: ["학생부종합(잠재능력우수자면접전형)","학생부종합(잠재능력우수자서류전형)"] },
+  { school: "한성대", department: "AI패션학부", url: "https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm", vendor: "uwayapply", expectedSiteTitle: "한성대학교", includeTypes: ["한성인재전형"] },
+  { school: "인천대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html", vendor: "jinhakapply", expectedSiteTitle: "국립인천대학교", includeTypes: ["학생부종합(자기추천)"] },
+  { school: "수원대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html", vendor: "jinhakapply", expectedSiteTitle: "수원대학교", includeTypes: ["면접위주교과전형"] },
 ];
 
 const USER_AGENT =
@@ -138,7 +141,7 @@ async function fetchTarget(target) {
 
   let rawRows =
     target.vendor === "uwayapply"
-      ? parser.parseRows(html, target.department)
+      ? parser.parseRows(html, target.department).filter((r) => r.학과 === target.department)
       : parser.parseRows(html).filter((r) => r.학과.includes(target.department));
 
   if (Array.isArray(target.includeTypes)) {

@@ -52,7 +52,9 @@ async function fetchTarget(target) {
 
   let rawRows =
     target.vendor === "uwayapply"
-      ? parser.parseRows(html, target.department)
+      ? // uwayapply는 department가 정규식 검색어라 "AI패션학부"를 넣으면
+        // "AI패션학부(야)" 같은 변형까지 같이 잡힌다. 정확히 일치하는 학과만 남긴다.
+        parser.parseRows(html, target.department).filter((r) => r.학과 === target.department)
       : parser
           .parseRows(html)
           .filter((r) => r.학과.includes(target.department));
