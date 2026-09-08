@@ -29,3 +29,4 @@ Claude 예약 클라우드 에이전트(routine)가 매시 13분에 `scraper/sta
 routine id: `trig_0159cGUbguBiuCud7kkqy84v` (관리: https://claude.ai/code/routines)
 
 급하게 최신값이 필요하면 Claude에게 "새로고침 해줘"라고 요청하면 즉시 재수집함.
+test

@@ -40,9 +40,16 @@ claude -p $prompt --permission-mode auto --allowedTools "Write Bash Artifact" --
 
 # GitHub Pages 배포: index.html(루트)은 위 3번 단계에서 이미 새로 생성됨.
 # 이건 순수 git 작업이라 에이전트를 또 부를 필요 없이 여기서 바로 커밋/푸시한다.
+#
+# 주의: PowerShell 5.1이 git 같은 외부 프로세스에 인자를 넘길 때 한글을 시스템
+# 코드페이지(CP949)로 넘겨서 커밋 메시지가 깨진다. UTF-8(BOM 없이) 파일로 써서
+# `git commit -F`로 넘기면 이 문제를 피할 수 있다.
 git add -A 2>&1 | Add-Content -Path $LogFile
+$commitMsgFile = Join-Path $env:TEMP "susi-ratio-commit-msg.txt"
 $commitMsg = "auto: 경쟁률 갱신 " + (Get-Date -Format "yyyy-MM-dd HH:mm")
-git commit -m $commitMsg 2>&1 | Add-Content -Path $LogFile
+[System.IO.File]::WriteAllText($commitMsgFile, $commitMsg, (New-Object System.Text.UTF8Encoding $false))
+git commit -F $commitMsgFile 2>&1 | Add-Content -Path $LogFile
+Remove-Item $commitMsgFile -ErrorAction SilentlyContinue
 git push origin main 2>&1 | Add-Content -Path $LogFile
 
 # 오래된 로그 정리 (최근 30개만 보관)
