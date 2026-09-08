@@ -27,18 +27,17 @@ node scraper/build-static-page.js
 
 ## 자동 갱신
 
-**Windows 작업 스케줄러**(`SusiRatioTracker`, 10분 주기)가 `scripts/run-scrape.ps1`을 실행함:
+**Windows 작업 스케줄러**(`SusiRatioTracker`, 10분 주기)가 `scripts/run-scrape.ps1`을 실행함 — 전부 순수 스크립트라 **Claude/토큰 소비 없이** 돈다:
 
-1. `node scraper/fetch-ratio.js` — 8개 대학 경쟁률 수집 → `data/latest.json`
-2. Claude CLI(`claude -p ... --permission-mode auto`)로 Artifact DB(`ratios/latest`) 갱신 + `artifact/public-snapshot.html` 재배포
-3. `scraper/build-static-page.js`로 `index.html`(repo 루트) 재생성
-4. `git add / commit / push` → GitHub Pages가 자동으로 다시 배포 (몇 분 내 반영)
+1. `node scraper/fetch-ratio.js` — 11개 대학 경쟁률 수집 → `data/latest.json`
+2. `node scraper/build-static-page.js` — `index.html`(repo 루트, GitHub Pages용) / `artifact/public-snapshot.html` 재생성
+3. `git add / commit / push` → GitHub Pages가 자동으로 다시 배포 (몇 분 내 반영)
 
 ### 왜 클라우드 예약작업(routine) 대신 로컬인가
 
 처음엔 Claude 클라우드 예약 에이전트(routine)로 시도했으나, 그 실행 환경의 아웃바운드 네트워크 정책이
 `addon.jinhakapply.com`, `ratio.uwayapply.com` 접속을 전면 차단해서(`no rule or allowlist entry allows host`)
-매번 실패했다. 반면 로컬 PC는 이 제약이 없어서, **로컬 작업 스케줄러 + 로컬에 설치한 Claude Code CLI**로 전환했다.
+매번 실패했다. 반면 로컬 PC는 이 제약이 없어서, **로컬 작업 스케줄러**로 전환했다.
 
 ### 왜 GitHub Pages도 같이 쓰는가
 
@@ -46,6 +45,14 @@ Claude 아티팩트를 로그인 없는 사람(클로드 계정 없는 가족 �
 이후 재배포해도 자동으로 갱신되지 않는다. 그래서 "로그인 없이 보되 계속 최신으로 갱신"이 필요한 대상에게는
 GitHub Pages(https://codenilab.github.io/susi-ratio-tracker/) 링크를 사용한다.
 
+### claude.ai 아티팩트 두 링크는 지금 자동 갱신 안 됨 (2026-09-08부터)
+
+로컬 CLI 세션에서 `Artifact` 도구 자체가 사라진 상태라(원인 불명, 로컬 CLI에만 해당 — Claude Code 채팅
+세션에는 정상적으로 있음), 예전엔 이 스크립트가 Claude를 통해 DB(`ratios/latest`)와 아티팩트 페이지도
+같이 갱신했지만 지금은 GitHub Pages만 자동 갱신된다. 그 두 링크(실시간 대시보드, 공유 스냅샷)를 최신화하려면
+Claude Code 채팅 세션에서 직접 "새로고침 해줘"라고 요청할 것. 도구가 로컬에 다시 나타나면 git 히스토리에서
+2/4단계(write_db, publish)를 되살릴 수 있다.
+
 ### 급할 때
 
-Claude에게 "새로고침 해줘"라고 요청하면 그 자리에서 즉시 재수집 + 재배포함.
+Claude에게 "새로고침 해줘"라고 요청하면 그 자리에서 즉시 재수집 + 재배포함 (GitHub Pages + claude.ai 아티팩트 둘 다).

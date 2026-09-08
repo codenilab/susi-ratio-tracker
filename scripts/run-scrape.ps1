@@ -1,4 +1,4 @@
-# run-scrape.ps1
+﻿# run-scrape.ps1
 # susi-ratio-tracker: 경쟁률을 수집해서 GitHub Pages(index.html)에 반영하는 로컬 자동화 스크립트.
 # Windows 작업 스케줄러가 이 파일을 10분마다 실행함.
 #
