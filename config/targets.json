@@ -5,7 +5,8 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "가천대학교",
-    "includeTypes": ["학생부우수자 전형", "가천바람개비 전형"]
+    "includeTypes": ["학생부우수자 전형", "가천바람개비 전형"],
+    "appliedTypes": ["가천바람개비 전형"]
   },
   {
     "school": "서울여대",

@@ -157,7 +157,13 @@
 
   /* 검색 */
   .filter {
-    margin-bottom: 26px;
+    margin-bottom: 10px;
+  }
+  .legend {
+    font-size: 12.5px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
   }
   .filter input {
     width: 100%;
@@ -278,6 +284,24 @@
     font-weight: 600;
   }
 
+  /* 실제로 원서를 낸 전형 표시 */
+  tbody tr.applied td { background: var(--accent-soft); }
+  tbody tr.applied:hover td { background: var(--accent-soft); }
+  tbody tr.applied td.name:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .mine {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 1px 7px;
+    margin-left: 6px;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+
   .chip {
     display: inline-block;
     font-size: 11px;
@@ -339,6 +363,7 @@
   <div class="filter">
     <input id="searchInput" type="text" placeholder="대학·학과·전형명으로 찾기 (예: 패션산업, 학생부종합)" autocomplete="off" />
   </div>
+  <div class="legend" id="legend" hidden>🎯 표시 = 실제로 원서를 낸 전형</div>
 
   <div class="schools" id="schools">
     <div class="empty-note">데이터를 불러오는 중…</div>
@@ -415,6 +440,8 @@
     updatedText.innerHTML =
       "마지막 갱신 <strong>" + fmtTime(latestDoc.generatedAt) + "</strong> (" + relativeTime(latestDoc.generatedAt) + ")";
 
+    document.getElementById("legend").hidden = !rows.some((r) => r.실제지원);
+
     // 요약 통계
     const schoolCount = new Set(rows.map((r) => r.대학)).size;
     const ratios = rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
@@ -464,8 +491,10 @@
           .map((r) => {
             const rv = parseRatio(r.경쟁률);
             const under = !isNaN(rv) && rv < 1;
+            const mine = !!r.실제지원;
             return (
-              '<tr><td class="name">' + r.전형 + "</td>" +
+              "<tr" + (mine ? ' class="applied"' : "") + '><td class="name">' + r.전형 +
+              (mine ? '<span class="mine">🎯 내 지원</span>' : "") + "</td>" +
               (multiDept ? '<td class="name">' + r.학과 + "</td>" : "") +
               '<td class="num">' + r.모집인원 + "</td>" +
               '<td class="num">' + r.지원인원 + "</td>" +

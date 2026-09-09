@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 const TARGETS = [
-  { school: "가천대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html", vendor: "jinhakapply", expectedSiteTitle: "가천대학교", includeTypes: ["학생부우수자 전형","가천바람개비 전형"] },
+  { school: "가천대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html", vendor: "jinhakapply", expectedSiteTitle: "가천대학교", includeTypes: ["학생부우수자 전형","가천바람개비 전형"], appliedTypes: ["가천바람개비 전형"] },
   { school: "서울여대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html", vendor: "jinhakapply", expectedSiteTitle: "서울여자대학교", includeTypes: ["학생부종합(바롬인재면접전형)","학생부종합(바롬인재서류전형)","학생부교과(교과우수자전형)"] },
   { school: "충남대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html", vendor: "jinhakapply", expectedSiteTitle: "충남대학교", includeTypes: ["일반전형","학생부종합 서류전형","학생부종합 면접전형"] },
   { school: "충북대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html", vendor: "jinhakapply", expectedSiteTitle: "충북대학교", includeTypes: ["학생부교과(학생부교과전형)","학생부종합(학생부종합Ⅰ전형)","학생부종합(학생부종합Ⅱ전형)"] },
@@ -55,7 +55,8 @@ const jinhakapply = {
         }
         const unitCells = cells.filter((c) => c.isUnit);
         if (unitCells.length === 0) continue;
-        const 학과 = unitCells[unitCells.length - 1].text;
+        const nonEmptyUnitCells = unitCells.filter((c) => c.text !== "");
+        const 학과 = (nonEmptyUnitCells.length ? nonEmptyUnitCells : unitCells).at(-1).text;
         const numberCells = cells.filter((c) => !c.isUnit);
         if (numberCells.length < 3) continue;
         const [모집인원, 지원인원, 경쟁률] = numberCells.slice(0, 3).map((c) => c.text);
@@ -158,6 +159,7 @@ async function fetchTarget(target) {
     경쟁률: r.경쟁률,
     수집시각: collectedAt,
     원본URL: target.url,
+    실제지원: Array.isArray(target.appliedTypes) && target.appliedTypes.includes(r.전형),
   }));
 }
 

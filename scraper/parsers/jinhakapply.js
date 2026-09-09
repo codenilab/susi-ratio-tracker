@@ -48,8 +48,11 @@ function parseRows(html) {
       const unitCells = cells.filter((c) => c.isUnit);
       if (unitCells.length === 0) continue; // 헤더행/총계행 등은 건너뜀
 
-      // 단과대학+학과 두 칸이 같이 나오는 학교는 마지막 unit 칸이 실제 학과명
-      const 학과 = unitCells[unitCells.length - 1].text;
+      // 단과대학+학과 두 칸이 같이 나오는 학교는 보통 마지막 unit 칸이 실제 학과명이지만,
+      // (한경대처럼) 학과명 뒤에 빈 unit 칸이 하나 더 붙는 경우도 있어서, 비어있지 않은
+      // 마지막 unit 칸을 학과명으로 쓴다(전부 비어있으면 그냥 마지막 칸).
+      const nonEmptyUnitCells = unitCells.filter((c) => c.text !== "");
+      const 학과 = (nonEmptyUnitCells.length ? nonEmptyUnitCells : unitCells).at(-1).text;
       const numberCells = cells.filter((c) => !c.isUnit);
       if (numberCells.length < 3) continue;
 

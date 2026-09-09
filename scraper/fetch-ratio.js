@@ -75,6 +75,8 @@ async function fetchTarget(target) {
     경쟁률: r.경쟁률,
     수집시각: collectedAt,
     원본URL: target.url,
+    // 실제로 원서를 낸 전형이면 true. targets.json의 appliedTypes에 적어두면 됨.
+    실제지원: Array.isArray(target.appliedTypes) && target.appliedTypes.includes(r.전형),
   }));
 }
 

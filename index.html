@@ -132,7 +132,13 @@
   }
   .stat.warn .num { color: var(--warn); }
 
-  .filter { margin-bottom: 26px; }
+  .filter { margin-bottom: 10px; }
+  .legend {
+    font-size: 12.5px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
   .filter input {
     width: 100%;
     font-family: inherit;
@@ -213,6 +219,24 @@
   tbody tr:hover td { background: var(--surface-2); }
   td.ratio { font-variant-numeric: tabular-nums; font-weight: 600; }
 
+  /* 실제로 원서를 낸 전형 표시 */
+  tbody tr.applied td { background: var(--accent-soft); }
+  tbody tr.applied:hover td { background: var(--accent-soft); }
+  tbody tr.applied td.name:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  .mine {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 1px 7px;
+    margin-left: 6px;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+
   .chip {
     display: inline-block;
     font-size: 11px;
@@ -255,6 +279,7 @@
   <div class="filter">
     <input id="searchInput" type="text" placeholder="대학·학과·전형명으로 찾기 (예: 패션산업, 학생부종합)" autocomplete="off" />
   </div>
+  <div class="legend" id="legend" hidden>🎯 표시 = 실제로 원서를 낸 전형</div>
 
   <div class="schools" id="schools"></div>
 
@@ -264,7 +289,7 @@
 </div>
 
 <script>
-  const latestDoc = {"generatedAt":"2026-09-09T11:09:03.241Z","rows":[{"전형":"학생부우수자 전형","대학":"가천대","학과":"패션산업학과","모집인원":"6","지원인원":"20","경쟁률":"3.33 : 1","수집시각":"2026-09-09T11:09:02.956Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html"},{"전형":"가천바람개비 전형","대학":"가천대","학과":"패션산업학과","모집인원":"7","지원인원":"98","경쟁률":"14.00 : 1","수집시각":"2026-09-09T11:09:02.956Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html"},{"전형":"학생부종합(바롬인재서류전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"4","지원인원":"6","경쟁률":"1.50 : 1","수집시각":"2026-09-09T11:09:02.979Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html"},{"전형":"학생부종합(바롬인재면접전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"7","지원인원":"54","경쟁률":"7.71 : 1","수집시각":"2026-09-09T11:09:02.979Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html"},{"전형":"학생부교과(교과우수자전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:09:02.979Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html"},{"전형":"일반전형","대학":"충남대","학과":"의류학과","모집인원":"8","지원인원":"16","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:09:03.017Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html"},{"전형":"학생부종합 면접전형","대학":"충남대","학과":"의류학과","모집인원":"4","지원인원":"11","경쟁률":"2.75 : 1","수집시각":"2026-09-09T11:09:03.017Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html"},{"전형":"학생부종합 서류전형","대학":"충남대","학과":"의류학과","모집인원":"3","지원인원":"6","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:09:03.017Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html"},{"전형":"학생부종합(학생부종합Ⅰ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"13","경쟁률":"3.25 : 1","수집시각":"2026-09-09T11:09:03.042Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html"},{"전형":"학생부종합(학생부종합Ⅱ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"15","경쟁률":"3.75 : 1","수집시각":"2026-09-09T11:09:03.042Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html"},{"전형":"학생부교과(학생부교과전형)","대학":"충북대","학과":"의류학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:09:03.042Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html"},{"전형":"학생부종합전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"11","지원인원":"49","경쟁률":"4.45 : 1","수집시각":"2026-09-09T11:09:03.069Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html"},{"전형":"학생부교과전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"3","지원인원":"16","경쟁률":"5.33 : 1","수집시각":"2026-09-09T11:09:03.069Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html"},{"전형":"정원내 학생부교과(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"7","지원인원":"19","경쟁률":"2.71 : 1","수집시각":"2026-09-09T11:09:03.122Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY="},{"전형":"정원내 학생부종합(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"9","지원인원":"31","경쟁률":"3.44 : 1","수집시각":"2026-09-09T11:09:03.122Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY="},{"전형":"학생부종합(잠재능력우수자서류전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"16","경쟁률":"3.20 : 1","수집시각":"2026-09-09T11:09:03.174Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html"},{"전형":"학생부종합(잠재능력우수자면접전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"32","경쟁률":"6.40 : 1","수집시각":"2026-09-09T11:09:03.174Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html"},{"전형":"한성인재전형","대학":"한성대","학과":"AI패션학부","모집인원":"18","지원인원":"75","경쟁률":"4.17 : 1","수집시각":"2026-09-09T11:09:03.195Z","원본URL":"https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm"},{"전형":"학생부종합(자기추천)","대학":"인천대","학과":"패션산업학과","모집인원":"13","지원인원":"59","경쟁률":"4.54 : 1","수집시각":"2026-09-09T11:09:03.221Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html"},{"전형":"면접위주교과전형","대학":"수원대","학과":"의류학과","모집인원":"8","지원인원":"45","경쟁률":"5.63 : 1","수집시각":"2026-09-09T11:09:03.241Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html"}]};
+  const latestDoc = {"generatedAt":"2026-09-09T11:15:53.356Z","rows":[{"전형":"학생부우수자 전형","대학":"가천대","학과":"패션산업학과","모집인원":"6","지원인원":"20","경쟁률":"3.33 : 1","수집시각":"2026-09-09T11:15:53.051Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html","실제지원":false},{"전형":"가천바람개비 전형","대학":"가천대","학과":"패션산업학과","모집인원":"7","지원인원":"99","경쟁률":"14.14 : 1","수집시각":"2026-09-09T11:15:53.051Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html","실제지원":true},{"전형":"학생부종합(바롬인재서류전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"4","지원인원":"6","경쟁률":"1.50 : 1","수집시각":"2026-09-09T11:15:53.074Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"학생부종합(바롬인재면접전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"7","지원인원":"54","경쟁률":"7.71 : 1","수집시각":"2026-09-09T11:15:53.074Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"학생부교과(교과우수자전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:15:53.074Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"일반전형","대학":"충남대","학과":"의류학과","모집인원":"8","지원인원":"16","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:15:53.116Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합 면접전형","대학":"충남대","학과":"의류학과","모집인원":"4","지원인원":"11","경쟁률":"2.75 : 1","수집시각":"2026-09-09T11:15:53.116Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합 서류전형","대학":"충남대","학과":"의류학과","모집인원":"3","지원인원":"6","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:15:53.116Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합(학생부종합Ⅰ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"13","경쟁률":"3.25 : 1","수집시각":"2026-09-09T11:15:53.151Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부종합(학생부종합Ⅱ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"15","경쟁률":"3.75 : 1","수집시각":"2026-09-09T11:15:53.151Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부교과(학생부교과전형)","대학":"충북대","학과":"의류학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:15:53.151Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부종합전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"11","지원인원":"49","경쟁률":"4.45 : 1","수집시각":"2026-09-09T11:15:53.180Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html","실제지원":false},{"전형":"학생부교과전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"3","지원인원":"16","경쟁률":"5.33 : 1","수집시각":"2026-09-09T11:15:53.180Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html","실제지원":false},{"전형":"정원내 학생부교과(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"7","지원인원":"20","경쟁률":"2.86 : 1","수집시각":"2026-09-09T11:15:53.223Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=","실제지원":false},{"전형":"정원내 학생부종합(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"9","지원인원":"31","경쟁률":"3.44 : 1","수집시각":"2026-09-09T11:15:53.223Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=","실제지원":false},{"전형":"학생부교과(일반전형_안성)_정원내","대학":"한경대","학과":"의류산업학과","모집인원":"6","지원인원":"17","경쟁률":"2.83 : 1","수집시각":"2026-09-09T11:15:53.255Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html","실제지원":false},{"전형":"학생부종합(잠재력우수자_안성)_정원내","대학":"한경대","학과":"의류산업학과","모집인원":"6","지원인원":"39","경쟁률":"6.50 : 1","수집시각":"2026-09-09T11:15:53.255Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html","실제지원":false},{"전형":"학생부종합(잠재능력우수자서류전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"16","경쟁률":"3.20 : 1","수집시각":"2026-09-09T11:15:53.283Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html","실제지원":false},{"전형":"학생부종합(잠재능력우수자면접전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"32","경쟁률":"6.40 : 1","수집시각":"2026-09-09T11:15:53.283Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html","실제지원":false},{"전형":"한성인재전형","대학":"한성대","학과":"AI패션학부","모집인원":"18","지원인원":"77","경쟁률":"4.28 : 1","수집시각":"2026-09-09T11:15:53.297Z","원본URL":"https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm","실제지원":false},{"전형":"학생부종합(자기추천)","대학":"인천대","학과":"패션산업학과","모집인원":"13","지원인원":"59","경쟁률":"4.54 : 1","수집시각":"2026-09-09T11:15:53.332Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html","실제지원":false},{"전형":"면접위주교과전형","대학":"수원대","학과":"의류학과","모집인원":"8","지원인원":"45","경쟁률":"5.63 : 1","수집시각":"2026-09-09T11:15:53.356Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html","실제지원":false}]};
   let filterText = "";
 
   function parseRatio(str) {
@@ -331,6 +356,8 @@
     const rows = latestDoc.rows;
     updateClock();
 
+    document.getElementById("legend").hidden = !rows.some((r) => r.실제지원);
+
     const schoolCount = new Set(rows.map((r) => r.대학)).size;
     const ratios = rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
     const underCount = ratios.filter((v) => v < 1).length;
@@ -373,8 +400,10 @@
           .map((r) => {
             const rv = parseRatio(r.경쟁률);
             const under = !isNaN(rv) && rv < 1;
+            const mine = !!r.실제지원;
             return (
-              '<tr><td class="name">' + r.전형 + "</td>" +
+              "<tr" + (mine ? ' class="applied"' : "") + '><td class="name">' + r.전형 +
+              (mine ? '<span class="mine">🎯 내 지원</span>' : "") + "</td>" +
               (multiDept ? '<td class="name">' + r.학과 + "</td>" : "") +
               '<td class="num">' + r.모집인원 + "</td>" +
               '<td class="num">' + r.지원인원 + "</td>" +
