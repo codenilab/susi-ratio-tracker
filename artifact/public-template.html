@@ -125,25 +125,46 @@
   }
   .stat.warn .num { color: var(--warn); }
 
-  .filter { margin-bottom: 10px; }
-  .legend {
-    font-size: 12.5px;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-  .filter input {
-    width: 100%;
+  .toolbar { margin-bottom: 20px; }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     font-family: inherit;
-    font-size: 14px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 16px 7px 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
   }
-  .filter input::placeholder { color: var(--text-faint); }
-  .filter input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .toggle:hover { border-color: var(--accent); }
+  .toggle-track {
+    flex: none;
+    width: 34px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--border);
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .toggle[aria-checked="true"] { border-color: var(--accent); color: var(--accent); }
+  .toggle[aria-checked="true"] .toggle-track { background: var(--accent); }
+  .toggle[aria-checked="true"] .toggle-thumb { transform: translateX(14px); }
 
   .schools { display: flex; flex-direction: column; gap: 18px; }
 
@@ -269,10 +290,12 @@
 
   <div class="stats" id="stats"></div>
 
-  <div class="filter">
-    <input id="searchInput" type="text" placeholder="대학·학과·전형명으로 찾기 (예: 패션산업, 학생부종합)" autocomplete="off" />
+  <div class="toolbar" id="toolbar" hidden>
+    <button id="appliedToggle" class="toggle" type="button" role="switch" aria-checked="false">
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      🎯 내 지원만 보기
+    </button>
   </div>
-  <div class="legend" id="legend" hidden>🎯 표시 = 실제로 원서를 낸 전형</div>
 
   <div class="schools" id="schools"></div>
 
@@ -283,7 +306,7 @@
 
 <script>
   const latestDoc = __DATA_JSON__;
-  let filterText = "";
+  let showAppliedOnly = false;
 
   function parseRatio(str) {
     if (!str) return NaN;
@@ -329,12 +352,6 @@
     return order.map((school) => ({ school, rows: map.get(school) }));
   }
 
-  function matchesFilter(row) {
-    if (!filterText) return true;
-    const hay = (row.대학 + " " + row.학과 + " " + row.전형).toLowerCase();
-    return hay.includes(filterText);
-  }
-
   function render() {
     const stats = document.getElementById("stats");
     const schoolsEl = document.getElementById("schools");
@@ -349,7 +366,7 @@
     const rows = latestDoc.rows;
     updateClock();
 
-    document.getElementById("legend").hidden = !rows.some((r) => r.실제지원);
+    document.getElementById("toolbar").hidden = !rows.some((r) => r.실제지원);
 
     const schoolCount = new Set(rows.map((r) => r.대학)).size;
     const ratios = rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
@@ -367,11 +384,14 @@
       '<div class="stat"><div class="num">' + (topRow ? topRow.경쟁률.replace(" : ", ":") : "-") + '</div><div class="label">' +
         (topRow ? topRow.대학 + " · " + topRow.전형 : "최고 경쟁률") + '</div></div>';
 
-    const groups = groupBySchool(rows).map((g) => ({ school: g.school, rows: g.rows.filter(matchesFilter) }));
+    const groups = groupBySchool(rows).map((g) => ({
+      school: g.school,
+      rows: showAppliedOnly ? g.rows.filter((r) => r.실제지원) : g.rows,
+    }));
     const visibleGroups = groups.filter((g) => g.rows.length > 0);
 
     if (visibleGroups.length === 0) {
-      schoolsEl.innerHTML = '<div class="empty-note">검색 결과가 없습니다.</div>';
+      schoolsEl.innerHTML = '<div class="empty-note">지원한 전형이 없습니다.</div>';
       return;
     }
 
@@ -431,8 +451,9 @@
       .join("");
   }
 
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    filterText = e.target.value.trim().toLowerCase();
+  document.getElementById("appliedToggle").addEventListener("click", (e) => {
+    showAppliedOnly = !showAppliedOnly;
+    e.currentTarget.setAttribute("aria-checked", String(showAppliedOnly));
     render();
   });
 

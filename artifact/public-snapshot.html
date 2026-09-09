@@ -125,25 +125,46 @@
   }
   .stat.warn .num { color: var(--warn); }
 
-  .filter { margin-bottom: 10px; }
-  .legend {
-    font-size: 12.5px;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 16px;
-  }
-  .filter input {
-    width: 100%;
+  .toolbar { margin-bottom: 20px; }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
     font-family: inherit;
-    font-size: 14px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 16px 7px 8px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
   }
-  .filter input::placeholder { color: var(--text-faint); }
-  .filter input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .toggle:hover { border-color: var(--accent); }
+  .toggle-track {
+    flex: none;
+    width: 34px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--border);
+    position: relative;
+    transition: background 0.15s ease;
+  }
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease;
+  }
+  .toggle[aria-checked="true"] { border-color: var(--accent); color: var(--accent); }
+  .toggle[aria-checked="true"] .toggle-track { background: var(--accent); }
+  .toggle[aria-checked="true"] .toggle-thumb { transform: translateX(14px); }
 
   .schools { display: flex; flex-direction: column; gap: 18px; }
 
@@ -269,10 +290,12 @@
 
   <div class="stats" id="stats"></div>
 
-  <div class="filter">
-    <input id="searchInput" type="text" placeholder="대학·학과·전형명으로 찾기 (예: 패션산업, 학생부종합)" autocomplete="off" />
+  <div class="toolbar" id="toolbar" hidden>
+    <button id="appliedToggle" class="toggle" type="button" role="switch" aria-checked="false">
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      🎯 내 지원만 보기
+    </button>
   </div>
-  <div class="legend" id="legend" hidden>🎯 표시 = 실제로 원서를 낸 전형</div>
 
   <div class="schools" id="schools"></div>
 
@@ -283,7 +306,7 @@
 
 <script>
   const latestDoc = {"generatedAt":"2026-09-09T11:19:02.301Z","rows":[{"전형":"학생부우수자 전형","대학":"가천대","학과":"패션산업학과","모집인원":"6","지원인원":"20","경쟁률":"3.33 : 1","수집시각":"2026-09-09T11:19:01.986Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html","실제지원":false},{"전형":"가천바람개비 전형","대학":"가천대","학과":"패션산업학과","모집인원":"7","지원인원":"99","경쟁률":"14.14 : 1","수집시각":"2026-09-09T11:19:01.986Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html","실제지원":true},{"전형":"학생부종합(바롬인재서류전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"4","지원인원":"6","경쟁률":"1.50 : 1","수집시각":"2026-09-09T11:19:02.008Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"학생부종합(바롬인재면접전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"7","지원인원":"54","경쟁률":"7.71 : 1","수집시각":"2026-09-09T11:19:02.008Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"학생부교과(교과우수자전형)","대학":"서울여대","학과":"패션산업학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:19:02.008Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html","실제지원":false},{"전형":"일반전형","대학":"충남대","학과":"의류학과","모집인원":"8","지원인원":"16","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:19:02.053Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합 면접전형","대학":"충남대","학과":"의류학과","모집인원":"4","지원인원":"11","경쟁률":"2.75 : 1","수집시각":"2026-09-09T11:19:02.053Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합 서류전형","대학":"충남대","학과":"의류학과","모집인원":"3","지원인원":"6","경쟁률":"2.00 : 1","수집시각":"2026-09-09T11:19:02.053Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html","실제지원":false},{"전형":"학생부종합(학생부종합Ⅰ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"13","경쟁률":"3.25 : 1","수집시각":"2026-09-09T11:19:02.094Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부종합(학생부종합Ⅱ전형)","대학":"충북대","학과":"의류학과","모집인원":"4","지원인원":"15","경쟁률":"3.75 : 1","수집시각":"2026-09-09T11:19:02.094Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부교과(학생부교과전형)","대학":"충북대","학과":"의류학과","모집인원":"5","지원인원":"14","경쟁률":"2.80 : 1","수집시각":"2026-09-09T11:19:02.094Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html","실제지원":false},{"전형":"학생부종합전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"11","지원인원":"49","경쟁률":"4.45 : 1","수집시각":"2026-09-09T11:19:02.122Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html","실제지원":false},{"전형":"학생부교과전형 일반전형(정원내)","대학":"공주대","학과":"의류상품학과","모집인원":"3","지원인원":"16","경쟁률":"5.33 : 1","수집시각":"2026-09-09T11:19:02.122Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html","실제지원":false},{"전형":"정원내 학생부교과(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"7","지원인원":"20","경쟁률":"2.86 : 1","수집시각":"2026-09-09T11:19:02.172Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=","실제지원":false},{"전형":"정원내 학생부종합(일반전형)","대학":"계명대","학과":"패션마케팅학과","모집인원":"9","지원인원":"31","경쟁률":"3.44 : 1","수집시각":"2026-09-09T11:19:02.172Z","원본URL":"https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=","실제지원":false},{"전형":"학생부교과(일반전형_안성)_정원내","대학":"한경대","학과":"의류산업학과","모집인원":"6","지원인원":"17","경쟁률":"2.83 : 1","수집시각":"2026-09-09T11:19:02.197Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html","실제지원":false},{"전형":"학생부종합(잠재력우수자_안성)_정원내","대학":"한경대","학과":"의류산업학과","모집인원":"6","지원인원":"39","경쟁률":"6.50 : 1","수집시각":"2026-09-09T11:19:02.197Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio30161171.html","실제지원":false},{"전형":"학생부종합(잠재능력우수자서류전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"16","경쟁률":"3.20 : 1","수집시각":"2026-09-09T11:19:02.226Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html","실제지원":false},{"전형":"학생부종합(잠재능력우수자면접전형)","대학":"가톨릭대","학과":"의류학과","모집인원":"5","지원인원":"32","경쟁률":"6.40 : 1","수집시각":"2026-09-09T11:19:02.226Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10030381.html","실제지원":false},{"전형":"한성인재전형","대학":"한성대","학과":"AI패션학부","모집인원":"18","지원인원":"77","경쟁률":"4.28 : 1","수집시각":"2026-09-09T11:19:02.239Z","원본URL":"https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm","실제지원":false},{"전형":"학생부종합(자기추천)","대학":"인천대","학과":"패션산업학과","모집인원":"13","지원인원":"59","경쟁률":"4.54 : 1","수집시각":"2026-09-09T11:19:02.272Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html","실제지원":false},{"전형":"면접위주교과전형","대학":"수원대","학과":"의류학과","모집인원":"8","지원인원":"45","경쟁률":"5.63 : 1","수집시각":"2026-09-09T11:19:02.301Z","원본URL":"https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html","실제지원":false}]};
-  let filterText = "";
+  let showAppliedOnly = false;
 
   function parseRatio(str) {
     if (!str) return NaN;
@@ -329,12 +352,6 @@
     return order.map((school) => ({ school, rows: map.get(school) }));
   }
 
-  function matchesFilter(row) {
-    if (!filterText) return true;
-    const hay = (row.대학 + " " + row.학과 + " " + row.전형).toLowerCase();
-    return hay.includes(filterText);
-  }
-
   function render() {
     const stats = document.getElementById("stats");
     const schoolsEl = document.getElementById("schools");
@@ -349,7 +366,7 @@
     const rows = latestDoc.rows;
     updateClock();
 
-    document.getElementById("legend").hidden = !rows.some((r) => r.실제지원);
+    document.getElementById("toolbar").hidden = !rows.some((r) => r.실제지원);
 
     const schoolCount = new Set(rows.map((r) => r.대학)).size;
     const ratios = rows.map((r) => parseRatio(r.경쟁률)).filter((v) => !isNaN(v));
@@ -367,11 +384,14 @@
       '<div class="stat"><div class="num">' + (topRow ? topRow.경쟁률.replace(" : ", ":") : "-") + '</div><div class="label">' +
         (topRow ? topRow.대학 + " · " + topRow.전형 : "최고 경쟁률") + '</div></div>';
 
-    const groups = groupBySchool(rows).map((g) => ({ school: g.school, rows: g.rows.filter(matchesFilter) }));
+    const groups = groupBySchool(rows).map((g) => ({
+      school: g.school,
+      rows: showAppliedOnly ? g.rows.filter((r) => r.실제지원) : g.rows,
+    }));
     const visibleGroups = groups.filter((g) => g.rows.length > 0);
 
     if (visibleGroups.length === 0) {
-      schoolsEl.innerHTML = '<div class="empty-note">검색 결과가 없습니다.</div>';
+      schoolsEl.innerHTML = '<div class="empty-note">지원한 전형이 없습니다.</div>';
       return;
     }
 
@@ -431,8 +451,9 @@
       .join("");
   }
 
-  document.getElementById("searchInput").addEventListener("input", (e) => {
-    filterText = e.target.value.trim().toLowerCase();
+  document.getElementById("appliedToggle").addEventListener("click", (e) => {
+    showAppliedOnly = !showAppliedOnly;
+    e.currentTarget.setAttribute("aria-checked", String(showAppliedOnly));
     render();
   });
 
