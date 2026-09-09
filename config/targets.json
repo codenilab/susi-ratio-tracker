@@ -38,7 +38,8 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "국립공주대학교",
-    "includeTypes": ["학생부교과전형 일반전형(정원내)", "학생부종합전형 일반전형(정원내)"]
+    "includeTypes": ["학생부교과전형 일반전형(정원내)", "학생부종합전형 일반전형(정원내)"],
+    "appliedTypes": ["학생부종합전형 일반전형(정원내)"]
   },
   {
     "school": "계명대",
