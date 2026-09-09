@@ -22,7 +22,8 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "충남대학교",
-    "includeTypes": ["일반전형", "학생부종합 서류전형", "학생부종합 면접전형"]
+    "includeTypes": ["일반전형", "학생부종합 서류전형", "학생부종합 면접전형"],
+    "appliedTypes": ["학생부종합 면접전형"]
   },
   {
     "school": "충북대",

@@ -11,7 +11,7 @@ const path = require("path");
 const TARGETS = [
   { school: "가천대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html", vendor: "jinhakapply", expectedSiteTitle: "가천대학교", includeTypes: ["학생부우수자 전형","가천바람개비 전형"], appliedTypes: ["가천바람개비 전형"] },
   { school: "서울여대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html", vendor: "jinhakapply", expectedSiteTitle: "서울여자대학교", includeTypes: ["학생부종합(바롬인재면접전형)","학생부종합(바롬인재서류전형)","학생부교과(교과우수자전형)"] },
-  { school: "충남대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html", vendor: "jinhakapply", expectedSiteTitle: "충남대학교", includeTypes: ["일반전형","학생부종합 서류전형","학생부종합 면접전형"] },
+  { school: "충남대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11400471.html", vendor: "jinhakapply", expectedSiteTitle: "충남대학교", includeTypes: ["일반전형","학생부종합 서류전형","학생부종합 면접전형"], appliedTypes: ["학생부종합 면접전형"] },
   { school: "충북대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html", vendor: "jinhakapply", expectedSiteTitle: "충북대학교", includeTypes: ["학생부교과(학생부교과전형)","학생부종합(학생부종합Ⅰ전형)","학생부종합(학생부종합Ⅱ전형)"], appliedTypes: ["학생부종합(학생부종합Ⅱ전형)"] },
   { school: "공주대", department: "의류상품학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10281081.html", vendor: "jinhakapply", expectedSiteTitle: "국립공주대학교", includeTypes: ["학생부교과전형 일반전형(정원내)","학생부종합전형 일반전형(정원내)"], appliedTypes: ["학생부종합전형 일반전형(정원내)"] },
   { school: "계명대", department: "패션마케팅학과", url: "https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=", vendor: "uwayapply", expectedSiteTitle: "계명대학교", includeTypes: ["정원내 학생부종합(일반전형)","정원내 학생부교과(일반전형)"] },
