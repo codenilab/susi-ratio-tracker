@@ -30,7 +30,8 @@
     "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11411051.html",
     "vendor": "jinhakapply",
     "expectedSiteTitle": "충북대학교",
-    "includeTypes": ["학생부교과(학생부교과전형)", "학생부종합(학생부종합Ⅰ전형)", "학생부종합(학생부종합Ⅱ전형)"]
+    "includeTypes": ["학생부교과(학생부교과전형)", "학생부종합(학생부종합Ⅰ전형)", "학생부종합(학생부종합Ⅱ전형)"],
+    "appliedTypes": ["학생부종합(학생부종합Ⅱ전형)"]
   },
   {
     "school": "공주대",
