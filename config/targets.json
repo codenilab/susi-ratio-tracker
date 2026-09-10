@@ -49,7 +49,8 @@
     "url": "https://ratio.uwayapply.com/Sl5KOk05SmYlJjomSjdmVGY=",
     "vendor": "uwayapply",
     "expectedSiteTitle": "계명대학교",
-    "includeTypes": ["정원내 학생부종합(일반전형)", "정원내 학생부교과(일반전형)"]
+    "includeTypes": ["정원내 학생부종합(일반전형)", "정원내 학생부교과(일반전형)"],
+    "appliedTypes": ["정원내 학생부교과(일반전형)"]
   },
   {
     "school": "한경대",
