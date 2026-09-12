@@ -91,5 +91,14 @@
     "vendor": "jinhakapply",
     "expectedSiteTitle": "수원대학교",
     "includeTypes": ["면접위주교과전형"]
+  },
+  {
+    "school": "성신여대",
+    "department": "의류산업학과",
+    "url": "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10930101.html",
+    "vendor": "jinhakapply",
+    "expectedSiteTitle": "성신여자대학교",
+    "includeTypes": ["자기주도인재"],
+    "appliedTypes": ["자기주도인재"]
   }
 ]
