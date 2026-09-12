@@ -20,7 +20,7 @@ const TARGETS = [
   { school: "한성대", department: "AI패션학부", url: "https://ratio.uwayapply.com/Sl5Kclc6Jlc4fEpmJSY6Jko3ZlRm", vendor: "uwayapply", expectedSiteTitle: "한성대학교", includeTypes: ["한성인재전형"] },
   { school: "인천대", department: "패션산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11230791.html", vendor: "jinhakapply", expectedSiteTitle: "국립인천대학교", includeTypes: ["학생부종합(자기추천)"] },
   { school: "수원대", department: "의류학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10970461.html", vendor: "jinhakapply", expectedSiteTitle: "수원대학교", includeTypes: ["면접위주교과전형"] },
-  { school: "성신여대", department: "의류산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10930101.html", vendor: "jinhakapply", expectedSiteTitle: "성신여자대학교", includeTypes: ["자기주도인재"], appliedTypes: ["자기주도인재"] },
+  { school: "성신여대", department: "의류산업학과", url: "https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10930201.html", vendor: "jinhakapply", expectedSiteTitle: "성신여자대학교", includeTypes: ["자기주도인재"], appliedTypes: ["자기주도인재"] },
 ];
 
 const USER_AGENT =
